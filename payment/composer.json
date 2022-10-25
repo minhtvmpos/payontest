@@ -1,0 +1,15 @@
+{
+    "name": "devteam/payon",
+    "autoload": {
+        "psr-4": {
+            "Devteam\\Payon\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "devteam",
+            "email": "tranvanminh30398@gmail.com"
+        }
+    ],
+    "require": {}
+}
