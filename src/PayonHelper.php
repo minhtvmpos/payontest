@@ -6,31 +6,45 @@ use Devteam\Payon\PayonEncrypto;
 
 class PayonHelper
 {
-
-    public function __construct()
+    private $secret_key;
+    private $app_id;
+    private $url;
+    private $http_auth;
+    private $http_auth_pass;
+    public function __construct(
+        string $secret_key, 
+        string $app_id, 
+        string $url, 
+        string $http_auth, 
+        string $http_auth_pass)
     {
+        $this->secret_key = $secret_key;
+        $this->app_id = $app_id;
+        $this->url = $url;
+        $this->http_auth = $http_auth;
+        $this->http_auth_pass = $http_auth_pass;
         $url_base = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https" : "http") . "://$_SERVER[HTTP_HOST]";
-        $this->ref_code = 'MCAPI-WPV1-'. $url_base;
+        $this->ref_code = 'MCAPI-LV-'. $url_base;
     }
 
     /**
      * @param $param
      * @return mixed
      */
-    function CreateOrderPaynow($param, $secret_key, $app_id, $url, $mc_auth, $mc_pass)
+    function CreateOrderPaynow($param)
     {
         $data = $param;
         $data = json_encode($data);
-        $crypto = new PayonEncrypto($secret_key);
+        $crypto = new PayonEncrypto($this->secret_key);
         $data = $crypto->Encrypt($data);
-        $checksum = md5($app_id . $data . $secret_key);
+        $checksum = md5($this->app_id . $data . $this->secret_key);
         $bodyPost = array(
-            'app_id' => $app_id,
+            'app_id' => $this->app_id,
             'data' => $data,
             'checksum' => $checksum,
             'ref_code' => $this->ref_code
         );
-        $result = $this->call($bodyPost, "createOrderPaynow", $url, $mc_auth, $mc_pass);
+        $result = $this->call($bodyPost, "createOrderPaynow", $this->url, $this->http_auth, $this->http_auth_pass);
         return $result;
     }
 
@@ -38,22 +52,22 @@ class PayonHelper
      * @param $input
      * @return mixed
      */
-    function CheckPayment($input, $secret_key, $app_id, $url, $mc_auth, $mc_pass)
+    function CheckPayment($input)
     {
         $data = array(
             'merchant_request_id' => $input,
         );
         $data = json_encode($data);
-        $crypto = new PayonEncrypto($secret_key);
+        $crypto = new PayonEncrypto($this->secret_key);
         $data = $crypto->Encrypt($data);
-        $checksum = md5($app_id . $data . $secret_key);
+        $checksum = md5($this->app_id . $data . $this->secret_key);
         $bodyPost = array(
-            'app_id' => $app_id,
+            'app_id' => $this->app_id,
             'data' => $data,
             'checksum' => $checksum,
             'ref_code' => $this->ref_code
         );
-        $result = $this->call($bodyPost, "checkPayment", $url, $mc_auth, $mc_pass);
+        $result = $this->call($bodyPost, "checkPayment", $this->url, $this->http_auth, $this->http_auth_pass);
         return $result;
     }
 
@@ -61,20 +75,20 @@ class PayonHelper
      * @param string $param
      * @return mixed
      */
-    function GetBankInstallment($param = "", $secret_key, $app_id, $url, $mc_auth, $mc_pass)
+    function GetBankInstallment($param = "")
     {
         $data = array();
         $data = json_encode($data);
-        $crypto = new PayonEncrypto($secret_key);
+        $crypto = new PayonEncrypto($this->secret_key);
         $data = $crypto->Encrypt($data);
-        $checksum = md5($app_id . $data . $secret_key);
+        $checksum = md5($this->app_id . $data . $this->secret_key);
         $bodyPost = array(
-            'app_id' => $app_id,
+            'app_id' => $this->app_id,
             'data' => $data,
             'checksum' => $checksum,
             'ref_code' => $this->ref_code
         );
-        $result = $this->call($bodyPost, "getBankInstallmentV2", $url, $mc_auth, $mc_pass);
+        $result = $this->call($bodyPost, "getBankInstallmentV2", $this->url, $this->http_auth, $this->http_auth_pass);
         return $result;
     }
 
@@ -82,19 +96,19 @@ class PayonHelper
      * @param $data
      * @return mixed
      */
-    function getFee($data, $secret_key, $app_id, $url, $mc_auth, $mc_pass)
+    function getFee($data)
     {
         $data = json_encode($data);
-        $crypto = new PayonEncrypto($secret_key);
+        $crypto = new PayonEncrypto($this->secret_key);
         $data = $crypto->Encrypt($data);
-        $checksum = md5($app_id . $data . $secret_key);
+        $checksum = md5($this->app_id . $data . $this->secret_key);
         $bodyPost = array(
-            'app_id' => $app_id,
+            'app_id' => $this->app_id,
             'data' => $data,
             'checksum' => $checksum,
             'ref_code' => $this->ref_code
         );
-        $result = $this->call($bodyPost, "getFeeInstallmentv2", $url, $mc_auth, $mc_pass);
+        $result = $this->call($bodyPost, "getFeeInstallmentv2", $this->url, $this->http_auth, $this->http_auth_pass);
         return $result;
     }
 
@@ -102,19 +116,19 @@ class PayonHelper
      * @param $data
      * @return mixed
      */
-    function createOrderInstallment($data, $secret_key, $app_id, $url, $mc_auth, $mc_pass)
+    function createOrderInstallment($data)
     {
         $data = json_encode($data);
-        $crypto = new PayonEncrypto($secret_key);
+        $crypto = new PayonEncrypto($this->secret_key);
         $data = $crypto->Encrypt($data);
-        $checksum = md5($app_id . $data . $secret_key);
+        $checksum = md5($this->app_id . $data . $this->secret_key);
         $bodyPost = array(
-            'app_id' => $app_id,
+            'app_id' => $this->app_id,
             'data' => $data,
             'checksum' => $checksum,
             'ref_code' => $this->ref_code
         );
-        $result = $this->call($bodyPost, "createOrderInstallment", $url, $mc_auth, $mc_pass);
+        $result = $this->call($bodyPost, "createOrderInstallment", $this->url, $this->http_auth, $this->http_auth_pass);
         return $result;
     }
 
@@ -123,7 +137,7 @@ class PayonHelper
      * @param $fnc
      * @return mixed
      */
-    function Call($params, $fnc, $url, $mc_auth, $mc_pass)
+    function Call($params, $fnc, $url, $http_auth, $http_auth_pass)
     {
         if(substr( $url,-1) != '/'){
             $url = $url.'/';
@@ -141,7 +155,7 @@ class PayonHelper
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($curl, CURLOPT_USERAGENT, $agent);
-        curl_setopt($curl, CURLOPT_USERPWD, $mc_auth . ':' . $mc_pass);
+        curl_setopt($curl, CURLOPT_USERPWD, $http_auth . ':' . $http_auth_pass);
         curl_setopt($curl, CURLOPT_POST, 1);
         curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($params));
         curl_setopt($curl, CURLOPT_HTTPHEADER, array(
