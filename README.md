@@ -1,2 +1,1 @@
-# payontest
-Payment PayOn
+# PayOn Payment
