@@ -6,7 +6,7 @@ use Payon\PaymentGateway\PayonEncrypto;
 
 class PayonHelper
 {
-    private $secret_key; //MC_SECRET_KEY: Khóa để thực hiện mã hóa tham số data trong các hàm nghiệp vụ
+    private $secret_key;
     private $app_id;
     private $url;
     private $http_auth;
@@ -148,7 +148,6 @@ class PayonHelper
             $url = $url.'/';
         }
         $url = $url.$fnc;
-        // $response = curl_exec($curl);
         $agent = $_SERVER["HTTP_USER_AGENT"];
         if(empty($agent))
         {
@@ -174,7 +173,6 @@ class PayonHelper
         if($resultStatus['http_code'] == 200 && isset($response) )
         {
             $response = json_decode($response, true);
-            // return $response['data'];
             if ($response['error_code'] == "00") {
                 return $response;
             } else {
