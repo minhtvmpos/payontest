@@ -1,12 +1,12 @@
 <?php
 
-namespace Devteam\Payon;
+namespace Payon\PaymentGateway;
 
-use Devteam\Payon\PayonEncrypto;
+use Payon\PaymentGateway\PayonEncrypto;
 
 class PayonHelper
 {
-    private $secret_key;
+    private $secret_key; //MC_SECRET_KEY: Khóa để thực hiện mã hóa tham số data trong các hàm nghiệp vụ
     private $app_id;
     private $url;
     private $http_auth;
@@ -28,6 +28,7 @@ class PayonHelper
     }
 
     /**
+     * Thanh toán ngay
      * @param $param
      * @return mixed
      */
@@ -49,7 +50,8 @@ class PayonHelper
     }
 
     /**
-     * @param $input
+     * Kiểm tra giao dịch
+     * @param $input: merchant_request_id
      * @return mixed
      */
     function CheckPayment($input)
@@ -72,10 +74,10 @@ class PayonHelper
     }
 
     /**
-     * @param string $param
+     * Lấy danh sách ngân hàng hỗ trợ trả góp
      * @return mixed
      */
-    function GetBankInstallment($param = "")
+    function GetBankInstallment()
     {
         $data = array();
         $data = json_encode($data);
@@ -93,6 +95,7 @@ class PayonHelper
     }
 
     /**
+     * Thông tin phí trả góp
      * @param $data
      * @return mixed
      */
@@ -113,6 +116,7 @@ class PayonHelper
     }
 
     /**
+     * Tạo yêu cầu thanh toán trả góp
      * @param $data
      * @return mixed
      */
@@ -132,7 +136,8 @@ class PayonHelper
         return $result;
     }
 
-    /**\
+    /**
+     * Curl
      * @param $params
      * @param $fnc
      * @return mixed

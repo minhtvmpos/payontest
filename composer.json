@@ -1,15 +1,22 @@
 {
-    "name": "devteam/payon",
+    "name": "payon/paymentgateway",
+    "type": "library",
+    "description": "Package hỗ trợ Merchant gọi các API liên quan đến thanh toán",
+    "keywords": ["payon","payment"],
+    "license": "MIT",
+    "homepage": "https://github.com/minhtvmpos/payontest",
     "autoload": {
         "psr-4": {
-            "Devteam\\Payon\\": "src/"
+            "Payon\\PaymentGateway\\": "src/"
         }
     },
     "authors": [
         {
             "name": "devteam",
-            "email": "tranvanminh30398@gmail.com"
+            "email": "minhtv@mpos.vn"
         }
     ],
-    "require": {}
+    "require": {
+        "php": ">=5.6.0"
+    }
 }
